@@ -19,3 +19,24 @@ def login(request):
         
         else:
             return HttpResponse('E-mail ou senha inválidos!')
+        
+def cadastro(request):
+    if request.method=="GET":
+        return render(request, 'usuarios/cadastro.html')
+    else:
+        username=request.POST.get('email')
+        email=request.POST.get('email')
+        password=request.POST.get('senha')
+        first_name=request.POST.get('nome')
+
+        user=User.objects.filter(username=username).first()
+
+        if user:
+            return HttpResponse('usuário já existente!')
+        else:
+            user=User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
+            user.save()
+
+            return HttpResponse('Usuário cadastrado com sucesso!')
+def home(request):
+    return render(request, 'usuarios/home.html')
